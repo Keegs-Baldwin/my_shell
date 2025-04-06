@@ -1,45 +1,53 @@
-```markdown
-# Minishell Projects
 
-This repository contains two projects: **Minishell1** and **Minishell2**, which are custom implementations of a UNIX-like shell written in C. Each project builds upon the previous one, with Minishell2 introducing additional features. Below is an explanation of what each shell can do, how to use them, and their limitations.
+# 🐚 Minishell Projects
+
+This repository contains two projects: **Minishell1** and **Minishell2**, which are custom implementations of a UNIX command interpreter written in C.  
+Each project builds upon the behavior of the TCSH shell.
 
 ---
 
-## Minishell1
+## 📁 Minishell1
 
-### Description
-Minishell1 is a basic UNIX command interpreter based on TCSH. It supports simple command execution without advanced features like pipes or redirections. The shell includes built-in commands and correctly handles environment variables.
+### 📌 Description
 
-### Features
-- Displays a prompt (`$>`).
-- Executes basic commands found in the system's `PATH` or via direct paths (e.g., `/bin/ls`).
+**Minishell1** is a basic UNIX command-line interpreter.  
+It supports simple command execution without advanced features like pipes or redirections. The shell includes built-in commands and manages the environment.
+
+### ✨ Features
+
+- Displays a prompt (`$>`)
+- Executes commands via:
+  - System `PATH`
+  - Direct paths (e.g., `/bin/ls`)
 - Built-in commands:
-  - `cd`: Change the current directory.
-  - `setenv`: Set an environment variable.
-  - `unsetenv`: Remove an environment variable.
-  - `env`: Display all environment variables.
-  - `exit`: Exit the shell.
-- Handles errors gracefully by displaying appropriate error messages and returning error codes.
-- Restores the initial environment after execution.
+  - `cd` – Change current directory
+  - `setenv` – Set an environment variable
+  - `unsetenv` – Remove an environment variable
+  - `env` – Display all environment variables
+  - `exit` – Exit the shell
+- Handles errors with messages printed to standard error
+- Manages `PATH` and environment variables correctly
 
-### How to Use
-1. Compile the program using the provided Makefile:
-   ```
+### ▶️ How to Use
+
+1. Compile using the provided Makefile:
+   ```bash
    make
    ```
 2. Run the shell:
-   ```
+   ```bash
    ./mysh
    ```
-3. Enter commands at the `$>` prompt. For example:
-   ```
+3. Enter commands at the `$>` prompt:
+   ```bash
    $> pwd
-   $> cd /tmp
-   $> ls -l
+   $> cd test
+   $> pwd
    ```
 
-### Examples
-```
+### 💡 Example
+
+```sh
 $> pwd
 /tmp
 $> cd test
@@ -49,75 +57,69 @@ $> pwd
 
 ---
 
-## Minishell2
+## ⚙️ Minishell2
 
-### Description
-Minishell2 builds on Minishell1 by introducing support for semicolons (`;`) and pipes (`|`). However, it does not support input (`>`, ``).
+### 📌 Description
 
-### Features
-- All features from Minishell1.
-- Support for semicolon-separated commands (e.g., `command1; command2`).
-- Basic pipe functionality (`|`) for inter-process communication.
-- Error handling with exit codes (`84` for errors, `0` for success).
+**Minishell2** expands on **Minishell1** with more advanced shell features, including:
 
-### How to Use
-1. Compile the program using the provided Makefile:
-   ```
-   make
-   ```
-2. Run the shell:
-   ```
-   ./mysh
-   ```
-3. Enter commands at the `$>` prompt, including semicolons or pipes where needed. For example:
-   ```
-   $> ls -l; pwd
-   $> ls | wc -l
-   ```
+- Pipes (`|`) for output/input chaining
+- Redirections:
+  - `>` : Redirect output (overwrite)
+  - `>>`: Redirect output (append)
+  - `<` : Redirect input
 
-### Examples
-```
-$> ls -l; ls | wc -l
+### 💡 Example Usage
+
+```sh
+$> ls -l; ls -l | wc -l
 total 4
-drwxr-xr-x 2 user user 4096 Mar 17 16:28 folder1
--rw-r--r-- 1 user user    0 Mar 17 16:28 file.txt
+drwxr-xr-x 2 johan johan 4096 Mar 17 16:28 tata
+-rw-r--r-- 1 johan johan    0 Mar 17 16:28 toto
 3
 
-$> mkdir test; cd test; ls | wc -c > output.txt; cat output.txt
+$> mkdir test ; cd test ; ls -a ; ls | cat | wc -c > tutu ; cat tutu
+. ..
 5
 ```
 
 ---
 
-## Compilation and Cleanup
+## 🛠️ Compilation & Cleanup
 
-Both Minishell projects include a Makefile with standard rules:
-- Compile: `make`
-- Clean object files: `make clean`
-- Remove all generated files: `make fclean`
-- Recompile from scratch: `make re`
+Both projects use a standard `Makefile` with the following rules:
 
----
-
-## Limitations
-
-### Minishell1:
-- Does not support advanced features like pipes, redirections, or background processes.
-
-### Minishell2:
-- Does not implement input (``, `>>`).
-
----
-
-## Error Handling
-
-Both shells handle errors by displaying appropriate messages on standard error and exiting with specific error codes:
-- Success: Exit code `0`.
-- Errors: Exit code `84`.
+- Compile:
+  ```bash
+  make
+  ```
+- Clean object files:
+  ```bash
+  make clean
+  ```
+- Remove all generated files:
+  ```bash
+  make fclean
+  ```
+- Recompile from scratch:
+  ```bash
+  make re
+  ```
 
 ---
 
-## Notes
+## 🚨 Error Handling
 
-These projects are designed as educational exercises in UNIX system programming and are not intended for production use. Feel free to explore and modify the code to add new features!
-```
+Errors are handled gracefully:
+- Relevant messages are printed to the error output
+- On error, the shell exits with code `84`
+- On success, it exits with code `0`
+
+---
+
+## 📝 Notes
+
+These projects are educational exercises in UNIX system programming.  
+Feel free to explore, modify, and experiment with the code!
+
+---
