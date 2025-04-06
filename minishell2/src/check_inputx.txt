@@ -1,0 +1,106 @@
+/*
+** EPITECH PROJECT, 2025
+** B-PSU-200-BAR-2-1-minishell1-keigan.baldwin
+** File description:
+** check_input
+*/
+
+#include "../include/my.h"
+
+static int handle_exit(info_t *info, int exit_s)
+{
+    free(info->input);
+    info->input = NULL;
+    return exit_s;
+}
+
+static int execute_command(info_t *info, char *command)
+{
+    int exit_s = 0;
+
+    if (command == NULL || command[0] == '\0')
+        return 0;
+    info->input = clean_string(command);
+    if (info->input == NULL || info->input[0] == '\0') {
+        free(info->input);
+        info->input = NULL;
+        return 0;
+    }
+    exit_s = input_to_func(info);
+    free(info->input);
+    info->input = NULL;
+    return exit_s;
+}
+
+static int process_input(info_t *info, char *dirty_str)
+{
+    int exit_s = 0;
+    char *command = dirty_str;
+    char *next_command;
+    size_t len = my_strlen(dirty_str);
+
+    if (len > 0 && dirty_str[len - 1] == '\n')
+        dirty_str[len - 1] = '\0';
+        for (char *next_command = my_strchr(command, '\n');
+        next_command != NULL; next_command = my_strchr(command, '\n')) {
+        *next_command = '\0';
+        exit_s = execute_command(info, command);
+        if (exit_s != 0)
+            break;
+        command = next_command + 1;
+    }
+    if (exit_s == 0)
+        exit_s = execute_command(info, command);
+    free(dirty_str);
+    return exit_s;
+}
+
+static int input_loop(info_t *info, const char *prompt)
+{
+    size_t len = 0;
+    int read;
+    int exit_s = 0;
+    char *dirty_str = NULL;
+
+    while (1) {
+        if (prompt)
+            write(1, prompt, 2);
+        read = getline(&dirty_str, &len, stdin);
+        if (read <= 0)
+            break;
+        exit_s = process_input(info, dirty_str);
+        dirty_str = NULL;
+        if (exit_s != 0)
+            break;
+    }
+    if (dirty_str)
+        free(dirty_str);
+    return exit_s;
+}
+
+static int input_loop_for_pipe(info_t *info)
+{
+    int exit_s = input_loop(info, NULL);
+
+    return handle_exit(info, exit_s);
+}
+
+static int input_loop_write(info_t *info)
+{
+    return input_loop(info, "~>");
+}
+
+int check_input(char **env)
+{
+    info_t info;
+    int exit_s = 0;
+
+    fill_struct(&info, env);
+    if (isatty(0)) {
+        exit_s = input_loop_write(&info);
+    } else {
+        exit_s = input_loop_for_pipe(&info);
+    }
+    free_info(&info);
+    return exit_s;
+}

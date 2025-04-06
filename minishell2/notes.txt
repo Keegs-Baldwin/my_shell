@@ -1,0 +1,50 @@
+
+get info of input() {
+
+send char * of line;
+
+brake it up by |
+
+get char ** "code with redir" of  <<, <, >, >> commands
+0 out, 1 in. 2 error
+
+send code with redir with struct of this to fill
+
+return
+struct {
+    fill {
+    get struct with
+    redir yes or no;
+    overwrite or not;
+    if from file or not;
+    last arg yes or no;}
+    char *exc path
+    args **
+}
+}
+
+
+main loop (char *in, env)
+{
+
+get_info while not last
+    int pd[2];
+    pipe(pd);
+
+    fork
+    child {
+
+        if redir
+            dup2(find output, 1);
+        else
+            dup2(pd[1], 1);
+        run_ecx(stuff);
+    }
+    parent {
+        dup2(pd[0], 0);
+    }
+}
+
+ecx last command 
+
+

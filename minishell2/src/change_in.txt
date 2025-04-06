@@ -1,0 +1,22 @@
+/*
+** EPITECH PROJECT, 2025
+** B-PSU-200-BAR-2-1-minishell2-keigan.baldwin
+** File description:
+** change_in
+*/
+
+#include "../include/my.h"
+
+int change_in(int num, char *filename)
+{
+    int fd;
+
+    if (filename == 2) {
+        fd = open(str, O_RDONLY);
+        if (fd == -1) {
+            write(2, "bad file\n", 9);
+        }
+        dup2(fd, 0);
+    } else {
+    }
+}
