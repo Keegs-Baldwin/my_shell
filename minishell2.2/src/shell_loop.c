@@ -67,7 +67,7 @@ void handle_line_input(char *line, size_t len, ast_t **ast, env_t *env)
 static void print_prompt(void)
 {
     if (isatty(0))
-        write(1, " >", 2);
+        write(1, "$>", 2);
 }
 
 void shell_loop(env_t *env)

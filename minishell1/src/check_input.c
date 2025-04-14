@@ -43,7 +43,7 @@ static void input_loop(info_t *info)
     char *dirty_str = NULL;
 
     while (1) {
-        write(1, "~>", 2);
+        write(1, "$>", 2);
         read = getline(&dirty_str, &len, stdin);
         dirty_str[read - 1] = '\0';
         info->input = clean_string(dirty_str);
